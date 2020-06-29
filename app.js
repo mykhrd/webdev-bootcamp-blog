@@ -46,15 +46,15 @@ app.post('/compose', function (req, res) {
     res.redirect('/');
 });
 
-app.get("/posts/:postId", function(req, res){
-
-    const requestedPostId = req.params.postId;
-
-    Post.findOne({_id: requestedPostId}, function(err, post){
-        res.render("post", {
-            title: post.title,
-            content: post.content
-        });
+app.get("/posts/:postName", function (req, res) {
+    const requestedTitle = req.params.postName;
+    posts.forEach(function (post) {
+        const storedTitle = post.postTitle;
+        if (storedTitle === requestedTitle) {
+            console.log("match found!");
+        } else {
+            console.log("match not found!");
+        }
     });
 
 });
