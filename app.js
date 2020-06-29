@@ -35,12 +35,12 @@ app.get('/compose', function (req, res) {
     res.render('compose');
 });
 
-
 app.post('/compose', function (req, res) {
 
     let postData = {
         postTitle: req.body.postTitle,
         postContent: req.body.postContent,
+        postUrl: req.body.postTitle.replace(/\s+/g, '-').toLowerCase(),
     };
 
     posts.push(postData)
@@ -48,16 +48,18 @@ app.post('/compose', function (req, res) {
 });
 
 app.get("/posts/:postName", function (req, res) {
-    const requestedTitle = req.params.postName;
+    const requestedTitle = req.params.postName.replace(/\s+/g, '-').toLowerCase();
+
     posts.forEach(function (post) {
-        const storedTitle = _.lowerCase(post.postTitle);
+        const storedTitle = post.postTitle.replace(/\s+/g, '-').toLowerCase();
+
         if (storedTitle === requestedTitle) {
-            console.log("match found!");
-        } else {
-            console.log("match not found!");
+            res.render('post', {
+                postTitle: post.postTitle,
+                postContent: post.postContent,
+            });
         }
     });
-
 });
 
 app.listen(3000, function () {
