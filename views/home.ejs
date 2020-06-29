@@ -3,4 +3,15 @@
 <p>
     <%= homeContent %>
 </p>
+
+<div>
+
+    <% for (let [key, value] of Object.entries(posts)) {
+        console.log(key, value); %>
+    <h2><%= value.postTitle %></h2>
+    <p><%= value.postContent %></p>
+
+    <% } %>
+</div>
+
 <%- include("partials/footer") -%>

@@ -15,15 +15,48 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
+let posts = [];
+
 // GET method route
 app.get('/', function (req, res) {
-    res.render('home', {homeContent: homeStartingContent});
+    res.render('home', {
+        homeContent: homeStartingContent,
+        posts: posts,
+    });
 });
 app.get('/about', function (req, res) {
     res.render('about', {aboutContent: aboutContent});
 });
 app.get('/contact', function (req, res) {
     res.render('contact', {contactContent: contactContent});
+});
+app.get('/compose', function (req, res) {
+    res.render('compose');
+});
+
+
+app.post('/compose', function (req, res) {
+
+    let postData = {
+        postTitle: req.body.postTitle,
+        postContent: req.body.postContent,
+    };
+
+    posts.push(postData)
+    res.redirect('/');
+});
+
+app.get("/posts/:postId", function(req, res){
+
+    const requestedPostId = req.params.postId;
+
+    Post.findOne({_id: requestedPostId}, function(err, post){
+        res.render("post", {
+            title: post.title,
+            content: post.content
+        });
+    });
+
 });
 
 app.listen(3000, function () {
